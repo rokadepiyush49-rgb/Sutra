@@ -107,7 +107,7 @@ jobs:
             yq -i '.image.api.digest = "${{ needs.build.outputs.digest-api }}" |
                    .image.web.digest = "${{ needs.build.outputs.digest-web }}"'
             deploy/helm/sutra/values-${{ env.TARGET }}.yaml
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           branch: release/${{ env.TARGET }}-${{ github.sha }}
           title: "release(${{ env.TARGET }}): ${{ github.ref_name }} @ ${{ github.sha }}"
