@@ -14,5 +14,9 @@ updates:
     directory: "/infra/terraform/modules/sutra"
     schedule: { interval: weekly }
     ignore:
-      # Major module versions rename inputs and need AWS provider v6: upgrade them by hand, with a plan.
-      - { dependency-name: "*", update-types: ["version-update:semver-major"] }
+      # These majors rename inputs and need AWS provider v6: upgrade them by hand, with a plan. Named versions,
+      # because Dependabot does not apply update-types to Terraform requirement ranges like "~> 6.10".
+      - { dependency-name: "terraform-aws-modules/eks/aws", versions: [">= 21.0.0"] }
+      - { dependency-name: "terraform-aws-modules/vpc/aws", versions: [">= 6.0.0"] }
+      - { dependency-name: "terraform-aws-modules/rds/aws", versions: [">= 7.0.0"] }
+      - { dependency-name: "terraform-aws-modules/eks-pod-identity/aws", versions: [">= 2.0.0"] }
