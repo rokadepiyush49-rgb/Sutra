@@ -7,7 +7,7 @@
 ARG NODE_VERSION=22
 
 # ── deps ────────────────────────────────────────────────────────────────────
-FROM node:${NODE_VERSION}-bookworm-slim AS deps
+FROM node:${NODE_VERSION}-trixie-slim AS deps
 WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
@@ -19,7 +19,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production
 RUN npm run build
 
 # ── runtime ─────────────────────────────────────────────────────────────────
-FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian12:nonroot AS runtime
+FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian13:nonroot AS runtime
 ARG VERSION=dev
 ARG REVISION=unknown
 LABEL org.opencontainers.image.title="sutra-web" \

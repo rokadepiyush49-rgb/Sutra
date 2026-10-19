@@ -29,8 +29,21 @@ versions follow [Semantic Versioning](https://semver.org/).
 - Every investigator screen: Signal Desk, Case Desk, Chain Explorer, Money Trail, Entity dossiers,
   Alibi Ledger, Risk Network, Mule Factory, Timeline Replay, Investigation Council, Evidence packs,
   Control Lab, Twin Scenario Lab, Governance.
+- Deployment guide (`docs/deployment/README.md`): configuration for both images, health checks, and
+  hosting on one server with Docker Compose, a managed container platform, or AWS.
 
 ### Fixed
+- Frontend builds and lints again. Next.js 16.4.0's Turbopack could not resolve Google fonts in
+  production builds (now 16.4.2), and TypeScript 7 broke ESLint, since typescript-eslint supports
+  TypeScript below 6.1 (back to 5.9.3).
+- Terraform validates again: the EKS 21, VPC 6, RDS 7 and Pod Identity 2 module majors rename inputs
+  and need AWS provider v6, so they are back to the versions the code targets.
+- The API image builds in an 8 GB Docker VM: training builds 2 worlds at a time
+  (`--build-arg TRAIN_WORKERS`, `SUTRA_TRAIN_WORKERS`) instead of up to 4.
+- `docker compose up` no longer collides with a Postgres already on the host: Compose publishes its
+  database on 5433 (`SUTRA_PG_PORT`).
+- CI installs the backend's `cloud` extra (`--all-packages`), so the S3 Object Lock and tracing tests
+  run instead of being skipped; the tracing test keeps spans in memory instead of calling a collector.
 - Detection re-runs no longer wipe cases: `persist` is one transaction, chains keep their IDs by
   `(kind, root_ref)`, human triage state is kept, and a chain with a case is never deleted.
 - G1 no longer reports "cycles" where more money returns than left (retention bounded to 70–110%).
@@ -46,6 +59,7 @@ versions follow [Semantic Versioning](https://semver.org/).
 - Training world now includes legitimate look-alikes and colluding approvers; M6 no longer reduces to a single rule.
 - Model metadata records artifact SHA-256 and library versions; a CI quality gate guards metrics,
   explanation exactness and single-feature shortcuts.
+- Dependabot no longer proposes TypeScript or Terraform module major versions; those need a deliberate upgrade.
 
 ### Fixed
 - ADR 007 said isotonic calibration; M5 uses Platt calibration.
@@ -60,4 +74,9 @@ versions follow [Semantic Versioning](https://semver.org/).
 - Sign-in rate limits key on each browser's address (the BFF forwards the one the load balancer saw),
   not on the web server's; unknown usernames cost the same as wrong passwords.
 - Sign-in only redirects to same-site paths (`?next=`); the BFF refuses `.`/`..` path segments.
+- The web image runs on distroless Debian 13, dropping 6 fixable OpenSSL CVEs (1 critical) in the
+  Debian 12 base. The mock-bank BFF route refuses `.`/`..` path segments too.
+- Read-only roles (internal audit, insider risk) can no longer edit a case or add notes; only roles
+  that work cases can (`cases:triage`, `cases:investigate`, `cases:assign` or `cases:review`). The
+  Case Desk hides the note box for them.
 - Compiled bytecode, generated evidence packs and model binaries are no longer tracked in Git.

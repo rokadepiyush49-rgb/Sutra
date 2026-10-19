@@ -29,7 +29,7 @@ resource "aws_prometheus_workspace" "metrics" {
 
 module "pod_identity_otel" {
   source  = "terraform-aws-modules/eks-pod-identity/aws"
-  version = "~> 2.9"
+  version = "~> 1.7"
 
   name = "${local.name}-otel-collector"
   additional_policy_arns = {

@@ -10,6 +10,7 @@ Everything about how SUTRA is built, run and evaluated. Diagrams are Mermaid and
 | [Technical & architecture guide](architecture/TECHNICAL_ARCHITECTURE_GUIDE.md) | The complete reference: data model, pipeline, detectors, models, API, frontend, platform |
 | [Architecture views](architecture/README.md) | Context, containers, AWS deployment and release flow |
 | [Tech decisions](architecture/TECH_DECISIONS.md) | Why each library and service, and what was rejected |
+| [Deployment guide](deployment/README.md) | Configuration, health checks, and hosting on one server, a container platform or AWS |
 
 ## Reference
 

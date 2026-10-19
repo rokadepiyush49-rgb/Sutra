@@ -34,7 +34,8 @@ services:
       POSTGRES_DB: sutra
       POSTGRES_USER: sutra
       POSTGRES_PASSWORD: sutra-local-dev
-    ports: ["127.0.0.1:5432:5432"]
+    # Published on 5433 so a Postgres already running on the host keeps 5432. Only for psql from the host.
+    ports: ["127.0.0.1:${SUTRA_PG_PORT:-5433}:5432"]
     volumes: [pgdata:/var/lib/postgresql/data]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U sutra -d sutra"]
