@@ -45,7 +45,7 @@ jobs:
           uv run python -m app.cli demo
       - name: Tests (54+ incl. scenario twins and API rules)
         run: uv run pytest --cov=app --cov-report=xml --junitxml=pytest.xml
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: backend-test-results
