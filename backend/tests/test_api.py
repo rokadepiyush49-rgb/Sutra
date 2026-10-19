@@ -170,6 +170,16 @@ def test_auditor_cannot_open_or_decide(client, as_user):
         assert client.post(f"{API}/cases", json={"alert_id": fresh}, headers=as_user("audit")).status_code == 403
 
 
+def test_read_only_roles_cannot_change_a_case(client, as_user, insider):
+    case = client.post(f"{API}/cases", json={"alert_id": insider}, headers=as_user("ananya")).json()
+    for user in ("audit", "karthik"):
+        headers = as_user(user)
+        assert client.patch(f"{API}/cases/{case['id']}", json={"assignee": user}, headers=headers).status_code == 403
+        assert client.post(f"{API}/cases/{case['id']}/notes", json={"body": "edit"}, headers=headers).status_code == 403
+    r = client.post(f"{API}/cases/{case['id']}/notes", json={"body": "Checked EV-103"}, headers=as_user("suresh"))
+    assert r.status_code == 200
+
+
 def test_four_eyes_decision(client, as_user, insider):
     ananya, meera = as_user("ananya"), as_user("meera")
     case = client.post(f"{API}/cases", json={"alert_id": insider}, headers=ananya).json()

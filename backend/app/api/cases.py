@@ -37,6 +37,15 @@ class OpenCase(BaseModel):
     alert_id: str
 
 
+# Roles that work cases. Read-only roles (internal audit, insider risk) can view a case but not change it.
+CASE_WORK = {"cases:triage", "cases:investigate", "cases:assign", "cases:review"}
+
+
+def _require_case_work(p: Principal, action: str) -> None:
+    if not CASE_WORK & p.capabilities:
+        raise HTTPException(403, f"Your role ({p.role}) cannot {action}.")
+
+
 @router.post("")
 def open_case(body: OpenCase, db: Annotated[Session, Depends(get_db)],
               p: Annotated[Principal, Depends(require("cases:read"))]) -> dict:
@@ -110,6 +119,7 @@ class CasePatch(BaseModel):
 @router.patch("/{case_id}")
 def patch_case(case_id: str, body: CasePatch, db: Annotated[Session, Depends(get_db)],
                p: Annotated[Principal, Depends(require("cases:read"))]) -> dict:
+    _require_case_work(p, "change cases")
     c = db.get(Case, case_id)
     if c is None:
         raise HTTPException(404, "Case not found")
@@ -131,6 +141,7 @@ class NoteIn(BaseModel):
 @router.post("/{case_id}/notes")
 def add_note(case_id: str, body: NoteIn, db: Annotated[Session, Depends(get_db)],
              p: Annotated[Principal, Depends(require("cases:read"))]) -> dict:
+    _require_case_work(p, "add case notes")
     if db.get(Case, case_id) is None:
         raise HTTPException(404, "Case not found")
     n = CaseNote(id=f"NOTE-{datetime.now(UTC):%H%M%S%f}", case_id=case_id, author=p.id, body=body.body,

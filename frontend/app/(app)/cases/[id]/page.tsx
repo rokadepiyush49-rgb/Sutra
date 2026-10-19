@@ -41,6 +41,8 @@ function SlaClock({ due }: { due: string | null }) {
   );
 }
 
+const CASE_WORK = ["cases:triage", "cases:investigate", "cases:assign", "cases:review"];
+
 function DecisionDialog({ c, onDone }: { c: CaseDetail; onDone: () => void }) {
   const [open, setOpen] = useState(false);
   const [decision, setDecision] = useState("ESCALATE");
@@ -127,6 +129,9 @@ export default function CaseCanvas() {
   const [active, setActive] = useState<string | null>(null);
   const [tab, setTab] = useState("why");
   const [note, setNote] = useState("");
+  const { data: me } = useMe();
+  // Same rule as the API: read-only roles (internal audit, insider risk) can read notes but not add them.
+  const canNote = me?.capabilities.some((cap) => CASE_WORK.includes(cap)) ?? false;
 
   useEffect(() => {
     if (!id) return;
@@ -264,11 +269,15 @@ export default function CaseCanvas() {
                 {n.body}
               </div>
             ))}
-            <div className="flex gap-2">
-              <input id="case-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Override used after expiry (EV-103); customer contact pending"
-                className="h-9 flex-1 rounded-md border border-line bg-panel px-3 text-[12.5px] text-ink outline-none focus:border-info" />
-              <Button size="sm" onClick={addNote} disabled={!note.trim()}>Add note</Button>
-            </div>
+            {canNote ? (
+              <div className="flex gap-2">
+                <input id="case-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Override used after expiry (EV-103); customer contact pending"
+                  className="h-9 flex-1 rounded-md border border-line bg-panel px-3 text-[12.5px] text-ink outline-none focus:border-info" />
+                <Button size="sm" onClick={addNote} disabled={!note.trim()}>Add note</Button>
+              </div>
+            ) : (
+              <p className="text-[12px] text-faint">Your role can read notes but not add them.</p>
+            )}
           </div>
         </Panel>
         <Panel>
