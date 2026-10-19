@@ -407,12 +407,7 @@ The full index is in [`docs/README.md`](docs/README.md).
 
 **Team Admiral** · HackMatrix 5.0
 
-| Part | Area | Member |
-|---|---|---|
-| 1 | Platform: API, data model, migrations, docs | Ajaya Nandiyawar |
-| 2 | Detection engine, AI Council and ML | Raghav Deo |
-| 3 | Frontend core: design system, app shell, shared components | Piyush Rokade |
-| 4 | Frontend screens | Riya Saroch |
+Contributor : Piyush Rokade , Riyu Devi , Ajaya Nandiyawar , Raghav Deo 
 
 ## 🤝 Contributing and security
 
