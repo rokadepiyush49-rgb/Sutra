@@ -238,7 +238,8 @@ cd Sutra
 docker compose up --build    # Postgres → migrate → seed + detect → API → web
 ```
 
-Open **http://localhost:3000** and pick a demo persona.
+Open **http://localhost:3000** and pick a demo persona. Compose publishes its Postgres on
+`127.0.0.1:5433` (set `SUTRA_PG_PORT` to change it), so a Postgres already on 5432 is left alone.
 
 ### Natively
 
@@ -328,6 +329,13 @@ four-eyes review.
 
 The full 8-minute walkthrough is in [`docs/hackathon/DEMO_SCRIPT.md`](docs/hackathon/DEMO_SCRIPT.md).
 
+### Deploy
+
+The [deployment guide](docs/deployment/README.md) covers the configuration both images need and
+three ways to host them: one server with Docker Compose behind HTTPS, a managed container platform,
+or the full AWS platform (EKS, Helm, Argo CD). Serve the web app over HTTPS: its session cookies
+are `Secure` in production builds.
+
 ## 📁 Project structure
 
 ```text
@@ -371,6 +379,7 @@ Sutra/
 ├── infra/terraform/          AWS: VPC, EKS + Karpenter, RDS, Valkey, S3 Object Lock, KMS, WAF, OIDC
 ├── docs/
 │   ├── architecture/         simple guide, full technical guide, diagrams, tech decisions
+│   ├── deployment/           configuration and hosting options
 │   ├── adr/                  23 architecture decision records
 │   ├── ml/                   model lifecycle, features, labeling, rule baseline
 │   ├── integrations/         Account Aggregator, Kestrel Bank
