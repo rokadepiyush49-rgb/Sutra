@@ -33,7 +33,7 @@ jobs:
       PYTHONPATH: ${{ github.workspace }}/backend:${{ github.workspace }}/data/kestrel_sim
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v7
         with: { enable-cache: true, python-version: "3.12" }
       # --all-packages: the `cloud` extra belongs to the backend workspace member, not the root project.
       - run: uv sync --frozen --all-groups --all-extras --all-packages   # incl. boto3 + OpenTelemetry, so cloud paths are tested
