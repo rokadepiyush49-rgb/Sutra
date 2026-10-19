@@ -74,7 +74,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
-      - uses: azure/setup-helm@v4
+      - uses: azure/setup-helm@v5
       - name: Lint
         run: helm lint deploy/helm/sutra -f deploy/helm/sutra/values-prod.yaml
       - name: Render every environment and validate against Kubernetes + CRD schemas
