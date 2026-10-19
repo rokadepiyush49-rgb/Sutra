@@ -1,7 +1,18 @@
 version: 2
 updates:
   - { package-ecosystem: uv, directory: "/", schedule: { interval: weekly }, groups: { python: { patterns: ["*"] } } }
-  - { package-ecosystem: npm, directory: "/frontend", schedule: { interval: weekly }, groups: { npm: { patterns: ["*"], update-types: [minor, patch] } } }
+  - package-ecosystem: npm
+    directory: "/frontend"
+    schedule: { interval: weekly }
+    groups: { npm: { patterns: ["*"], update-types: [minor, patch] } }
+    ignore:
+      # typescript-eslint (used by eslint-config-next) supports TypeScript < 6.1 only; TS 7 breaks `npm run lint`.
+      - { dependency-name: typescript, update-types: ["version-update:semver-major"] }
   - { package-ecosystem: github-actions, directory: "/", schedule: { interval: weekly } }
   - { package-ecosystem: docker, directory: "/docker", schedule: { interval: weekly } }
-  - { package-ecosystem: terraform, directory: "/infra/terraform/modules/sutra", schedule: { interval: weekly } }
+  - package-ecosystem: terraform
+    directory: "/infra/terraform/modules/sutra"
+    schedule: { interval: weekly }
+    ignore:
+      # Major module versions rename inputs and need AWS provider v6: upgrade them by hand, with a plan.
+      - { dependency-name: "*", update-types: ["version-update:semver-major"] }
