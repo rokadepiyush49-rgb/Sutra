@@ -134,6 +134,8 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           exit-code: "1"
+        env:
+          TRIVY_SECRET_CONFIG: .github/trivy-secret.yaml   # documented false positives only
 
   secrets:
     name: Secret scan
