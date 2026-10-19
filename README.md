@@ -58,16 +58,16 @@ officer uses a forgotten override after hours to take over a dormant pensioner's
 
 | | Capability | What it means |
 |---|---|---|
-| 🧵 | **Needle: chain assembly** | Rebuilds time-ordered chains across IAM, SOC, fraud-ops and AML data with a hop grammar `ACCESS → CHANGE → SESSION → PAYEE → TXN → TXN*`, with Δt ≤ 72 h per hop |
-| 🧾 | **Alibi Ledger** | Asks *why* every staff access happened: a matching ticket, the customer's portfolio, a workflow queue item or a customer interaction, inside a rostered shift. Verdict: `EXPLAINED` · `PARTIAL` · `UNEXPLAINED` |
-| ⚖️ | **Brief: argued alerts** | Seven dimensions, each with supporting *and* contradicting evidence; benign hypotheses tested as a defence; missing evidence listed; priority from readable rules, not a weighted score |
-| 🏛️ | **Investigation Council** | Eight specialist agents and a moderator debate the case over its evidence and hand a structured finding (consensus *and* dissent) to a human |
-| 💬 | **Ask SUTRA** | Evidence-grounded Q&A where every sentence cites evidence codes; a verifier drops any sentence whose figures aren't in what it cites. Also drafts STRs |
-| 🛡️ | **Control Lab (Mend)** | Counterfactuals: which control would have broken the chain, how early, how much it would have saved, and what it would cost legitimate operations over 90 days |
-| 🧪 | **Twin Scenario Lab** | Every suspicious scenario has a legitimate twin that differs by one fact; SUTRA must flag one and stay quiet on the other |
-| 📦 | **Evidence packs** | 11-section PDF export with a SHA-256 manifest that detects tampering |
-| 🔐 | **Governance** | Pseudonymous staff with two-person unmask, a hash-chained audit log, role-based capabilities, and a registry of every detector, model and rule |
-| 📡 | **Live Ops** | Streams a held-back evening of 247 raw rows from 11 source systems and runs the real pipeline end to end, nothing pre-computed |
+|  | **Needle: chain assembly** | Rebuilds time-ordered chains across IAM, SOC, fraud-ops and AML data with a hop grammar `ACCESS → CHANGE → SESSION → PAYEE → TXN → TXN*`, with Δt ≤ 72 h per hop |
+|  | **Alibi Ledger** | Asks *why* every staff access happened: a matching ticket, the customer's portfolio, a workflow queue item or a customer interaction, inside a rostered shift. Verdict: `EXPLAINED` · `PARTIAL` · `UNEXPLAINED` |
+|  | **Brief: argued alerts** | Seven dimensions, each with supporting *and* contradicting evidence; benign hypotheses tested as a defence; missing evidence listed; priority from readable rules, not a weighted score |
+|  | **Investigation Council** | Eight specialist agents and a moderator debate the case over its evidence and hand a structured finding (consensus *and* dissent) to a human |
+|  | **Ask SUTRA** | Evidence-grounded Q&A where every sentence cites evidence codes; a verifier drops any sentence whose figures aren't in what it cites. Also drafts STRs |
+|  | **Control Lab (Mend)** | Counterfactuals: which control would have broken the chain, how early, how much it would have saved, and what it would cost legitimate operations over 90 days |
+|  | **Twin Scenario Lab** | Every suspicious scenario has a legitimate twin that differs by one fact; SUTRA must flag one and stay quiet on the other |
+|  | **Evidence packs** | 11-section PDF export with a SHA-256 manifest that detects tampering |
+|  | **Governance** | Pseudonymous staff with two-person unmask, a hash-chained audit log, role-based capabilities, and a registry of every detector, model and rule |
+|  | **Live Ops** | Streams a held-back evening of 247 raw rows from 11 source systems and runs the real pipeline end to end, nothing pre-computed |
 
 <table>
   <tr>
