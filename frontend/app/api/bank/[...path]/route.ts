@@ -5,6 +5,10 @@ import { API } from "@/lib/server/session";
 
 async function forward(request: Request, ctx: { params: Promise<{ path: string[] }> }): Promise<Response> {
   const { path } = await ctx.params;
+  // Same guard as the SUTRA proxy: "." and ".." would resolve outside /api/v1/bank.
+  if (path.some((p) => p === "." || p === "..")) {
+    return Response.json({ detail: "Not found" }, { status: 404 });
+  }
   const url = new URL(request.url);
   const target = `${API}/api/v1/bank/${path.map(encodeURIComponent).join("/")}${url.search}`;
   const token = request.headers.get("x-bank-token");
