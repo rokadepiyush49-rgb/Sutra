@@ -137,6 +137,9 @@ def test_s3_writes_are_object_locked_and_kms_encrypted():
 def test_tracing_switches_on_only_with_an_endpoint(monkeypatch):
     pytest.importorskip("opentelemetry.sdk")
     from fastapi import FastAPI
+    from opentelemetry.exporter.otlp.proto.http import trace_exporter
+    from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
     from app.core.db import engine
     from app.core.observability import configure_tracing
@@ -144,4 +147,10 @@ def test_tracing_switches_on_only_with_an_endpoint(monkeypatch):
     monkeypatch.delenv("OTEL_EXPORTER_OTLP_ENDPOINT", raising=False)
     assert configure_tracing(FastAPI(), engine) is False
     monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://127.0.0.1:4318")
-    assert configure_tracing(FastAPI(), engine) is True
+    # No collector runs in tests: keep spans in memory, and take the shared engine's instrumentation
+    # off again so later tests don't trace every query.
+    monkeypatch.setattr(trace_exporter, "OTLPSpanExporter", InMemorySpanExporter)
+    try:
+        assert configure_tracing(FastAPI(), engine) is True
+    finally:
+        SQLAlchemyInstrumentor().uninstrument()
