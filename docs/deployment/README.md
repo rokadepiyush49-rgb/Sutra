@@ -78,6 +78,9 @@ you add a TLS proxy.
 Verified on macOS (Docker Desktop, 8 GB VM): the full stack comes up healthy, the seed job passes
 14/14 scenario checks, and sign-in, cases and evidence packs work through the web app.
 
+**On Azure for Students**, follow [azure-vm.md](azure-vm.md): every portal setting and server command
+for a `Standard_B2as_v2` VM in Central India, with a free `*.cloudapp.azure.com` address and HTTPS.
+
 1. A server with Docker Engine and the Compose plugin, at least 4 GB of RAM (8 GB to build the
    images on it), and a DNS name pointing at it.
 2. Clone the repository and create `.env` next to `docker-compose.yml` with your own secrets:
