@@ -100,7 +100,7 @@ jobs:
           for dir in infra/terraform/bootstrap infra/terraform/envs/staging infra/terraform/envs/prod; do
             terraform -chdir=$dir init -backend=false -input=false && terraform -chdir=$dir validate
           done
-      - uses: terraform-linters/setup-tflint@v4
+      - uses: terraform-linters/setup-tflint@v6
       - run: tflint --init --config "$GITHUB_WORKSPACE/infra/terraform/.tflint.hcl" && tflint --recursive --config "$GITHUB_WORKSPACE/infra/terraform/.tflint.hcl" --chdir infra/terraform
       - name: Policy-as-code (Checkov)
         uses: bridgecrewio/checkov-action@v12
