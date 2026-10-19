@@ -89,6 +89,8 @@ class Settings(BaseSettings):
     # value) caught none of 24 insider sessions on unseen worlds 10–11; 2%, chosen on worlds 7–9, caught all 24
     # with no look-alike flagged and left M7's FIN-04 results unchanged (ml/reports/m1_m2_eval.json, ADR 021).
     m2_signal_percentile: float = Field(0.02, gt=0, lt=0.5)
+    # Processes that build training worlds (~1.5 GB each); 0 = up to 4, from the CPU count. Lower it where memory is tight.
+    train_workers: int = Field(0, ge=0, le=16)
     # Where models and evaluation reports are written; empty = ml/artifacts and ml/reports (experiments set these).
     artifacts_dir: str = ""
     reports_dir: str = ""

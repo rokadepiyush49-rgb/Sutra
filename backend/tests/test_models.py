@@ -58,3 +58,18 @@ def test_m6_treeshap_is_additive_and_not_a_single_rule(meta, frames):
     share = share / share.sum()
     top = MULE_FEATURES[int(share.argmax())]
     assert share.max() < 0.8, f"M6 leans on one feature ({top}: {share.max():.0%}) — a rule, not a model"
+
+
+def test_train_workers_caps_the_world_pool(monkeypatch):
+    """SUTRA_TRAIN_WORKERS keeps training inside small image builders (each world needs ~1.5 GB)."""
+    from types import SimpleNamespace
+
+    from app.ml import worlds
+
+    built = SimpleNamespace(name="w", cases=[], chain_y=np.array([]), mule_y=np.array([]))
+    monkeypatch.setattr(worlds, "get_settings", lambda: SimpleNamespace(train_workers=1))
+    monkeypatch.setattr(worlds, "_job", lambda job: built)
+    lines: list[str] = []
+    out = worlds.build_worlds([(7, "tiny", False), (8, "tiny", False), (9, "tiny", False)], log=lines.append)
+    assert out == [built] * 3
+    assert "on 1 processes" in lines[0]

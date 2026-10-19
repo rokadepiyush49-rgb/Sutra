@@ -40,7 +40,9 @@ COPY data/scenarios data/scenarios
 ENV PYTHONPATH=/app/backend:/app/data/kestrel_sim PATH=/opt/venv/bin:$PATH
 # Deterministic: same code + same worlds (seeds 7–10) → same model. Training ignores --seed; the registry
 # records the worlds, metrics, libraries and the validation that promoted each model.
-RUN python -m app.cli train
+# Each training world needs ~1.5 GB, so the pool stays small enough for an 8 GB Docker VM or CI runner.
+ARG TRAIN_WORKERS=2
+RUN SUTRA_TRAIN_WORKERS=${TRAIN_WORKERS} python -m app.cli train
 
 # ── runtime ─────────────────────────────────────────────────────────────────
 FROM python:${PYTHON_VERSION}-slim-bookworm AS runtime

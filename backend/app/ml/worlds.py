@@ -22,6 +22,7 @@ from types import SimpleNamespace
 import numpy as np
 import pandas as pd
 
+from app.core.config import get_settings
 from app.ml.cases import HUBS
 from app.ml.features import CHAIN_FEATURES, MULE_FEATURES, chain_row
 
@@ -170,8 +171,12 @@ def _job(args: tuple[int, str, bool]) -> WorldData:
 
 
 def build_worlds(jobs: list[tuple[int, str, bool]], log=print) -> list[WorldData]:
-    """Build several worlds in parallel processes (each needs ~1.5 GB and ~30 s)."""
-    workers = max(1, min(len(jobs), (os.cpu_count() or 2) - 2, 4))
+    """Build several worlds in parallel processes (each needs ~1.5 GB and ~30 s).
+
+    SUTRA_TRAIN_WORKERS caps the pool on machines with little memory (image builds, small CI runners).
+    """
+    workers = get_settings().train_workers or min((os.cpu_count() or 2) - 2, 4)
+    workers = max(1, min(len(jobs), workers))
     log(f"▸ Building {len(jobs)} synthetic worlds on {workers} processes …")
     if workers == 1:
         out = [_job(j) for j in jobs]
