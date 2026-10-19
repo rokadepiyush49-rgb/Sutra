@@ -47,7 +47,7 @@ jobs:
             type=sha,format=long
             type=semver,pattern={{version}}
       - id: build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: docker/${{ matrix.component }}.Dockerfile
